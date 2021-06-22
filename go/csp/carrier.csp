@@ -1,0 +1,13 @@
+Carrier() = TransportOrder -> SKIP; DeliveryRequest -> DeliveryInfo -> SKIP; ((DeclarationRequest -> DeclarationForm-> SKIP) [] (Confirmation-> SKIP) ); cCM[i]!Receipt-> SKIP
+
+A() = ((cBC[i]?TransportOrder -> SKIP);
+B() = DeliveryRequest -> SKIP;
+C() = DeliveryInfo -> SKIP;
+D() = DeclarationRequest -> SKIP;
+E() = DeclarationForm-> SKIP;
+F() = D; E;
+G() = Confirmation-> SKIP;
+H() = F [] G;
+I() = cCM[i]!Receipt-> SKIP;
+
+Carrier() = A; B; C; H; I;

@@ -1,0 +1,7 @@
+Wholesaler() =  cWM!ProductOrder -> cWM?ProductStatus -> cWM?DeliveryOrder -> Skip; //批发商2
+
+A() = cWM!ProductOrder -> Skip;
+B() = cWM?ProductStatus -> Skip;
+C() = cWM?DeliveryOrder -> Skip;
+
+Wholesaler() = A; B; C;

@@ -1,0 +1,13 @@
+//@@协同交互@@
+//5个组织间的协同交互。批发商:Wholesaler；生产商：Manufacturer；中间商：Broker；运输商：Carrier；供应商：Supplier；
+Wholesaler() =  cWM!ProductOrder -> cWM?ProductStatus -> cWM?DeliveryOrder -> Skip; //批发商2
+
+Manufacturer() = cWM?ProductOrder -> cMB!SupplierOrder -> cMB?OrderStatus -> (|||i:{0..n-1}@ (cCM[i]?Receipt-> Skip)); (cWM!ProductStatus-> cWM!DeliveryOrder -> Skip); //生产商
+
+Broker() = cMB?SupplierOrder -> Skip;  (cBS!TurnSupplierOrder-> Skip) || (|||i:{0..n-1}@ (cBC[i]!TransportOrder->Skip)); //中间商
+
+Supplier() = cBS?TurnSupplierOrder ->Skip; (|||i:{0..n-1}@ ((cCS[i]?DeliveryRequest->cCS[i]!DeliveryInfo->Skip); ((cCS[i]?DeclarationRequest->cCS[i]!DeclarationForm -> Skip) [] (cCS[i]?Confirmation-> Skip) ))); //供应商 并行
+
+Carrier() = |||i:{0..n-1}@ ((cBC[i]?TransportOrder -> Skip); cCS[i]!DeliveryRequest -> cCS[i]?DeliveryInfo -> Skip; ((cCS[i]!DeclarationRequest -> cCS[i]?DeclarationForm-> Skip) [] (cCS[i]!Confirmation-> Skip) ); cCM[i]!Receipt-> Skip ) ; //运输商
+
+CollaborativeSystem() = Wholesaler() || Manufacturer() || Broker() || Supplier() || Carrier(); 

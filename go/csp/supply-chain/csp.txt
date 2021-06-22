@@ -1,0 +1,5 @@
+Supplier() = supplierOrder?SupplierReceiveOrder -> specialCarrierRequest?SupplierReceiveRequest -> details!SupplierProvideDetails -> waybill!ProvideWaybill;
+Middleman() = middlemanOrder?MiddlemanReceiveOrder -> supplierOrder!MiddlemanForwardOrder -> transportOrder!OrderTransport -> STOP;
+SpecialCarrier() = transportOrder?SpecialCarrierReceiveOrder -> specialCarrierRequest!RequestDetails -> details?ReceiveDetails -> waybill?ReceiveWaybill -> deliver!DeliverOrder -> STOP;
+Manufacturer() = manufacturerOrder?ManufacturerReceiveOrder -> middlemanOrder!ManufacturerPlaceOrder -> deliver?ManufacturerReceiveDeliverOrder -> report!ReportStartOfProduction -> product!DeliverProduct -> STOP;
+BulkBuyer() = manufacturerOrder!BulkBuyerPlaceOrder -> report?GetReport -> product?  -> STOP;

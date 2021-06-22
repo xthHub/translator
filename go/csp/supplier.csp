@@ -1,0 +1,12 @@
+Supplier() = cBS?TurnSupplierOrder ->Skip; (|||i:{0..n-1}@ ((cCS[i]?DeliveryRequest->cCS[i]!DeliveryInfo->Skip); ((cCS[i]?DeclarationRequest->cCS[i]!DeclarationForm -> Skip) [] (cCS[i]?Confirmation-> Skip) ))); //供应商 并行
+
+A() = cBS?TurnSupplierOrder ->Skip;
+B() = |||i:{0..n-1}@ (cCS[i]?DeliveryRequest->Skip);
+C() = |||i:{0..n-1}@ (cCS[i]!DeliveryInfo->Skip);
+D() = cCS[i]?DeclarationRequest -> Skip;
+E() = cCS[i]!DeclarationForm -> Skip;
+F() = D; E;
+G() = cCS[i]?Confirmation-> Skip;
+H() = F [] G;
+
+Supplier() = A; B; C; H;
